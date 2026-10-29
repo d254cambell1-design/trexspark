@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TREXSPARK Agency</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- SPLASH SCREEN -->
+  <div id="splash">
+    <h1 class="splash-title">Welcome to <br><span>TREXSPARK Agency</span></h1>
+    <p class="splash-motto">Beyond Limits. Beyond Expectations.</p>
+  </div>
+
+  <!-- MAIN NAVBAR (Shows globally) -->
+  <header class="topbar">
+    <div class="logo" onclick="navTo('landing')">TREX<span>SPARK</span></div>
+    <nav>
+      <a href="#" onclick="navTo('landing')">Home</a>
+      <a href="#" onclick="openAuthModal()" id="nav-login">Login</a>
+      <a href="#" onclick="navTo('history')" id="nav-history" style="display:none;">History</a>
+      <a href="#" onclick="navTo('admin')" id="nav-admin" style="display:none;">Admin</a>
+      <a href="#" onclick="logout()" id="nav-logout" style="display:none; color: #e50914;">Logout</a>
+    </nav>
+  </header>
+
+  <!-- 1. LANDING PAGE -->
+  <div id="page-landing" class="page active">
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Unlimited Access. <br><span>One Simple Plan.</span></h1>
+        <p>Experience premium services without the hassle. Pay securely with your local mobile money.</p>
+        <button onclick="openAuthModal()" class="cta" style="border:none; cursor:pointer;" id="get-started-btn">Get Started</button>
+      </div>
+      <div class="hero-image">
+        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Dashboard">
+      </div>
+    </section>
+    <section class="partners">
+      <p>Official Partner of</p>
+      <div class="partner-logo">
+        <svg viewBox="0 0 24 24" width="32" height="32" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L3 6v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V6l-9-4zm0 2.18l7 3.11V12c0 4.52-2.98 8.69-7 9.93-4.02-1.24-7-5.41-7-9.93V7.29l7-3.11zM11 15h2v2h-2v-2zm0-8h2v6h-2V7z" fill="#3375BB"/></svg>
+        <span>Trust Wallet</span>
+      </div>
+    </section>
+  </div>
+
+  <!-- 2. WELCOME DASHBOARD (Hidden until verified) -->
+  <div id="page-dashboard" class="page" style="display: none;">
+    <section class="dashboard-hero">
+      <div class="live-banner">
+        <div class="pulse-dot"></div>
+        <span>Live Integration Active</span>
+        <strong>In Partnership with Trust Wallet</strong>
+      </div>
+      <h1>Welcome, <span id="user-phone-display">User</span></h1>
+      <p class="charming-text">Your journey to financial freedom begins now. You have secured access to TREXSPARK's exclusive ecosystem. Explore your plans, partner offers, and make payments below.</p>
+      <div style="margin-top: 40px; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+        <button onclick="navTo('pay')" class="cta" style="border:none; cursor:pointer;">Make a Payment</button>
+        <button onclick="navTo('help')" class="choose" style="width: auto; padding: 16px 40px;">Need Help?</button>
+      </div>
+    </section>
+
+    <!-- EXCLUSIVE OFFERS & PLANS -->
+    <section class="plans-section">
+      <h2>Your Subscription Plans</h2>
+      <div class="plans">
+        <div class="plan featured">
+          <span class="badge">BEST VALUE</span>
+          <h3>Lifetime VIP</h3>
+          <p class="price">$50<span> once</span></p>
+          <ul><li>Permanent access</li><li>Priority support</li></ul>
+          <button class="choose" onclick="navTo('pay')">Pay Now</button>
+        </div>
+        <div class="plan">
+          <h3>Monthly Basic</h3>
+          <p class="price">$20<span>/mo</span></p>
+          <ul><li>Full site access</li><li>Standard support</li></ul>
+          <button class="choose" onclick="navTo('pay')">Pay Now</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 3. JIUNGE-STYLE PAYMENT PAGE -->
+  <div id="page-pay" class="page">
+    <div class="card" style="margin-top: 120px;">
+      <button class="back" onclick="navTo('dashboard')">← Back to Dashboard</button>
+      <h2>Make a Payment</h2>
+      <p class="summary">Enter the amount you wish to pay.</p>
+
+      <label>Amount (USD)</label>
+      <input type="number" id="pay-amount" placeholder="e.g. 20" min="1" />
+
+      <label>Phone Number</label>
+      <input type="tel" id="pay-phone" placeholder="Enter mobile money number" inputmode="numeric" />
+
+      <label>Payment Method</label>
+      <div class="methods" id="pay-methods">
+        <label class="method selected"><input type="radio" name="method" value="MPESA" checked><span>M-Pesa</span></label>
+        <label class="method"><input type="radio" name="method" value="AIRTEL"><span>Airtel Money</span></label>
+      </div>
+
+      <button class="pay" onclick="processPayment()">Confirm Payment</button>
+      <p class="error" id="pay-error"></p>
+    </div>
+  </div>
+
+  <!-- 4. HISTORY PAGE -->
+  <div id="page-history" class="page">
+    <div class="plans-section" style="padding-top: 120px;">
+      <h2>Transaction History</h2>
+      <div class="card" style="max-width: 800px; padding: 20px; overflow-x: auto;">
+        <table style="width: 100%; text-align: left; border-collapse: collapse;">
+          <thead>
+            <tr style="border-bottom: 1px solid #333;">
+              <th style="padding: 10px;">Date</th>
+              <th style="padding: 10px;">Amount</th>
+              <th style="padding: 10px;">Method</th>
+              <th style="padding: 10px;">Status</th>
+            </tr>
+          </thead>
+          <tbody id="history-table-body">
+            <!-- Filled by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. HELP PAGE -->
+  <div id="page-help" class="page">
+    <div class="plans-section" style="padding-top: 120px; max-width: 800px; margin: 0 auto;">
+      <h2>Help & Support</h2>
+      <div class="plan" style="margin-bottom: 20px; text-align: left;">
+        <h3>Need help immediately?</h3>
+        <p style="color: #a1a1aa; margin: 10px 0;">Our support team is available 24/7 on WhatsApp.</p>
+        <a href="https://wa.me/254700000000" target="_blank" class="choose" style="display: inline-block; text-align: center; text-decoration: none; width: auto; padding: 12px 24px; background: #25D366; color: white;">Chat on WhatsApp</a>
+      </div>
+      <div class="plan" style="text-align: left;">
+        <h3>Frequently Asked Questions (FAQs)</h3>
+        <div style="margin-top: 20px;">
+          <p style="font-weight: bold; color: #e50914;">How long does payment take?</p>
+          <p style="color: #a1a1aa; margin-bottom: 15px;">Payments are usually instant. If it says "Pending", please wait up to 5 minutes.</p>
+          <p style="font-weight: bold; color: #e50914;">What if my payment fails?</p>
+          <p style="color: #a1a1aa; margin-bottom: 15px;">Failed payments are usually due to network issues. No money is deducted. You can try again.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. ADMIN PAGE -->
+  <div id="page-admin" class="page">
+    <div class="plans-section" style="padding-top: 120px;">
+      <h2>Admin Dashboard</h2>
+      <div id="admin-login" class="card">
+        <h3>Admin Login</h3>
+        <label>Password</label>
+        <input type="password" id="admin-pass" placeholder="Enter password (admin123)" />
+        <button class="pay" onclick="adminLogin()">Login</button>
+        <p class="error" id="admin-err"></p>
+      </div>
+      <div id="admin-panel" style="display: none;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+          <h3>All Transactions</h3>
+          <button class="choose" style="width: auto; padding: 10px 20px;" onclick="logoutAdmin()">Logout</button>
+        </div>
+        <div class="card" style="max-width: 1000px; padding: 20px; overflow-x: auto;">
+          <table style="width: 100%; text-align: left; border-collapse: collapse;">
+            <thead>
+              <tr style="border-bottom: 1px solid #333;">
+                <th style="padding: 10px;">Date</th>
+                <th style="padding: 10px;">Phone</th>
+                <th style="padding: 10px;">Amount</th>
+                <th style="padding: 10px;">Status</th>
+              </tr>
+            </thead>
+            <tbody id="admin-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOGIN / AUTH MODAL -->
+  <div id="auth-modal" class="modal-overlay">
+    <div id="login-screen" class="card">
+      <button class="back" onclick="closeAuthModal()" style="margin-bottom:10px;">✕ Close</button>
+      <h2>Access Your Account</h2>
+      <div class="partner-badge"><span>In partnership with</span><strong>Trust Wallet</strong></div>
+      <p class="summary" style="background: none; padding: 0; margin-bottom: 20px;">Enter your number to receive a code.</p>
+      <label>Country</label>
+      <select id="login-country">
+        <option value="KE" data-placeholder="712345678">🇰🇪 Kenya</option>
+        <option value="NG" data-placeholder="8012345678">🇳🇬 Nigeria</option>
+        <option value="ZA" data-placeholder="821234567">🇿🇦 South Africa</option>
+        <option value="GH" data-placeholder="241234567">🇬🇭 Ghana</option>
+        <option value="UG" data-placeholder="771234567">🇺🇬 Uganda</option>
+        <option value="TZ" data-placeholder="621234567">🇹🇿 Tanzania</option>
+        <option value="ZM" data-placeholder="971234567">🇿🇲 Zambia</option>
+      </select>
+      <label>Phone Number</label>
+      <input type="tel" id="login-phone" placeholder="Enter your number" inputmode="numeric" />
+      <button id="login-btn" class="pay" type="button">Send Code</button>
+      <p class="error" id="login-error"></p>
+    </div>
+    <div id="otp-screen" class="card" style="display: none;">
+      <h2>Verify Number</h2>
+      <p class="summary" id="otp-text" style="background: none; padding: 0; margin-bottom: 20px;">We sent a code.</p>
+      <label>4-Digit Code (Demo: 1234)</label>
+      <input type="tel" id="otp-input" placeholder="••••" inputmode="numeric" maxlength="4" style="letter-spacing: 10px; text-align: center; font-size: 24px;" />
+      <button id="verify-btn" class="pay" type="button">Verify & Proceed</button>
+      <p class="error" id="otp-error"></p>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer style="margin-top: 50px; position: relative; z-index: 10;">
+    <p><strong>TREXSPARK Agencies</strong></p>
+    <p>Email: support@trexspark.com</p>
+    <div style="margin-top: 15px; font-size: 12px; color: #555;">
+      <a href="#" style="color: #555; margin: 0 10px;" onclick="alert('Privacy Policy: We do not share your data.')">Privacy Policy</a>
+      <a href="#" style="color: #555; margin: 0 10px;" onclick="alert('Terms: All payments are final.')">Terms & Conditions</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+    </html>
