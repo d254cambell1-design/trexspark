@@ -1,0 +1,148 @@
+/* =========================================
+   TRADING DASHBOARD (Screenshot Design)
+   ========================================= */
+
+.trading-dashboard-container {
+  max-width: 500px;
+  margin: 120px auto 50px;
+  padding: 0 20px;
+  font-family: 'Inter', sans-serif;
+}
+
+.account-overview {
+  background: #111622;
+  border: 1px solid #1f2937;
+  border-radius: 16px;
+  padding: 30px;
+  margin-bottom: 30px;
+}
+
+.account-overview p {
+  color: #9ca3af;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.account-overview h1 {
+  font-size: 48px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.account-overview span {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.trading-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.grid-card {
+  background: #111622;
+  border: 1px solid #1f2937;
+  border-radius: 16px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.grid-card:hover {
+  background: #1a2235;
+  border-color: #374151;
+  transform: translateY(-3px);
+}
+
+.grid-card .icon {
+  font-size: 24px;
+  margin-bottom: 15px;
+  display: inline-block;
+  background: #1a2235;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.grid-card h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 5px;
+}
+
+.grid-card p {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+/* Package Cards (Hidden by default) */
+.package-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #111622;
+  border: 1px solid #1f2937;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 15px;
+  transition: all 0.3s;
+}
+
+.package-card:hover {
+  border-color: #e50914;
+}
+
+.pkg-icon {
+  background: #064e3b;
+  color: #34d399;
+  padding: 15px;
+  border-radius: 12px;
+  font-size: 24px;
+}
+
+.pkg-info {
+  flex: 1;
+  margin-left: 15px;
+}
+
+.pkg-info h4 {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.pkg-info h2 {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.pkg-info h2 span {
+  font-size: 14px;
+  font-weight: 400;
+  color: #9ca3af;
+}
+
+.pkg-info p {
+  color: #6b7280;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.risk-warning {
+  margin-top: 40px;
+  padding: 20px;
+  background: rgba(229, 9, 20, 0.05);
+  border: 1px solid rgba(229, 9, 20, 0.2);
+  border-radius: 12px;
+  color: #9ca3af;
+  font-size: 12px;
+  text-align: center;
+}
+
+.risk-warning strong {
+  color: #e50914;
+}
