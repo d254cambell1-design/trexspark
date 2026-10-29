@@ -1,0 +1,140 @@
+/* =========================================
+   1. SPLASH & NAVIGATION
+   ========================================= */
+setTimeout(() => {
+  document.getElementById("splash").classList.add("hidden");
+}, 3500);
+
+function navTo(pageId) {
+  document.querySelectorAll(".page").forEach(p => p.style.display = "none");
+  document.getElementById("page-" + pageId).style.display = "block";
+  
+  const isLoggedIn = localStorage.getItem("trex_phone");
+  if (!isLoggedIn && ["dashboard", "trading", "pay"].includes(pageId)) {
+    openAuthModal();
+    document.getElementById("page-landing").style.display = "block";
+    return;
+  }
+  window.scrollTo(0, 0);
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  const savedPhone = localStorage.getItem("trex_phone");
+  if (savedPhone) showDashboard(savedPhone);
+});
+
+/* =========================================
+   2. LOGIN & OTP LOGIC (With Country Detection)
+   ========================================= */
+function openAuthModal() {
+  document.getElementById("auth-modal").style.display = "block";
+  document.getElementById("login-screen").style.display = "block";
+  document.getElementById("otp-screen").style.display = "none";
+}
+function closeAuthModal() { document.getElementById("auth-modal").style.display = "none"; }
+
+// NEW: Detect Country and change placeholder
+const countrySelect = document.getElementById("login-country");
+const phoneInput = document.getElementById("login-phone");
+
+countrySelect.addEventListener("change", () => {
+  const selectedOption = countrySelect.options[countrySelect.selectedIndex];
+  const placeholder = selectedOption.getAttribute("data-placeholder");
+  
+  phoneInput.value = ""; // clear old number
+  if (placeholder) {
+    phoneInput.placeholder = "e.g. " + placeholder;
+    phoneInput.maxLength = placeholder.length;
+  } else {
+    phoneInput.placeholder = "Enter phone number";
+  }
+});
+// Trigger once on load in case a country is pre-selected
+countrySelect.dispatchEvent(new Event('change'));
+
+let pendingPhone = "";
+document.getElementById("login-btn").addEventListener("click", () => {
+  const phoneRaw = document.getElementById("login-phone").value.trim();
+  if (phoneRaw.length < 8) {
+    document.getElementById("login-error").textContent = "Please enter a valid phone number.";
+    return;
+  }
+  pendingPhone = phoneRaw;
+  document.getElementById("otp-text").textContent = `Code sent to ${phoneRaw}. (Use 1234)`;
+  document.getElementById("login-screen").style.display = "none";
+  document.getElementById("otp-screen").style.display = "block";
+});
+
+document.getElementById("verify-btn").addEventListener("click", () => {
+  if (document.getElementById("otp-input").value.trim() === "1234") {
+    localStorage.setItem("trex_phone", pendingPhone);
+    closeAuthModal();
+    showDashboard(pendingPhone);
+  } else {
+    document.getElementById("otp-error").textContent = "Incorrect code. Try 1234.";
+  }
+});
+
+function showDashboard(phone) {
+  navTo("dashboard");
+  document.getElementById("user-phone-display").textContent = phone;
+  document.getElementById("nav-login").style.display = "none";
+  document.getElementById("nav-dash").style.display = "inline-block";
+  document.getElementById("nav-trading").style.display = "inline-block";
+  document.getElementById("nav-logout").style.display = "inline-block";
+}
+function logout() { localStorage.clear(); location.reload(); }
+
+/* =========================================
+   3. TRADING & DEPOSIT LOGIC
+   ========================================= */
+function toggleInitiation() {
+  const pkgDiv = document.getElementById("initiation-packages");
+  pkgDiv.style.display = pkgDiv.style.display === "none" ? "block" : "none";
+  if (pkgDiv.style.display === "block") pkgDiv.scrollIntoView({ behavior: 'smooth' });
+}
+
+function initiateTrade(planName, feeAmount) {
+  navTo("pay");
+  // Convert fee to KES for the deposit screen (1 USD = 130 KES approx)
+  const kesAmount = feeAmount * 130;
+  document.getElementById("pay-amount-input").value = kesAmount;
+  document.getElementById("pay-phone-input").value = "254" + localStorage.getItem("trex_phone");
+  calculateExchangeRate();
+}
+
+function setAmount(val) {
+  document.getElementById("pay-amount-input").value = val;
+  calculateExchangeRate();
+}
+
+function calculateExchangeRate() {
+  const amount = document.getElementById("pay-amount-input").value || 0;
+  const usd = (amount * 0.007695).toFixed(2);
+  document.getElementById("calc-usd").textContent = `${usd} USD`;
+}
+
+document.getElementById("pay-amount-input").addEventListener("input", calculateExchangeRate);
+
+// NEW: Change provider logo when Airtel/M-Pesa is selected
+document.getElementById("deposit-provider").addEventListener("change", function() {
+  const logo = document.getElementById("provider-logo");
+  if (this.value === "AIRTEL") {
+    logo.textContent = "AIRTEL";
+    logo.style.color = "#e50914";
+  } else {
+    logo.textContent = "M-PESA";
+    logo.style.color = "#2ecc71";
+  }
+});
+
+function processPayment() {
+  const amount = document.getElementById("pay-amount-input").value;
+  const phone = document.getElementById("pay-phone-input").value;
+  const provider = document.getElementById("deposit-provider").value;
+
+  if (!amount || !phone) { alert("Please fill all fields"); return; }
+
+  alert(`Deposit Successful via ${provider}! STK push sent to your phone.`);
+  navTo('trading');
+    }
